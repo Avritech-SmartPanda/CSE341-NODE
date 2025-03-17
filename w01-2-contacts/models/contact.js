@@ -13,6 +13,5 @@ module.exports = (mongoose) => {
       { timestamps: true }
     )
   );
-
   return Contact;
 };
