@@ -4,6 +4,7 @@ const lesson1Controller = require('../controllers/lesson1');
 
 routes.get('/', lesson1Controller.daphneRoute);
 routes.get('/about', lesson1Controller.aboutRoute);
+routes.get('/contacts',require('./contacts'));
 
-module.exports = routes;
-
+module.exports = routes
+ 
