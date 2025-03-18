@@ -9,5 +9,4 @@ routes.put('/:temple_id', temples.update);
 routes.delete('/:temple_id', temples.delete);
 routes.delete('/', temples.deleteAll);
 
-
 module.exports = routes;
