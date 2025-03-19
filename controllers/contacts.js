@@ -55,10 +55,10 @@ const getContacts = (req, res) => {
 
 };
 
-// Find a single Contact with an id
+
 const getContact = async (req, res) => {
   try {
-    const contact_id = new ObjectId(req.params.id);
+    const contact_id = ObjectId.createFromHexString(req.params.id);
     const contact = await Contact.findOne({ _id: contact_id })
     if (contact) {
       res.status(200).send(contact);
@@ -73,10 +73,10 @@ const getContact = async (req, res) => {
   }
 };
 
-// Update trhe whole  contact by the id in the request
+
 const updateContact = async (req, res) => {
   try {
-    const contact_id = new ObjectId(req.params.id);
+    const contact_id = ObjectId.createFromHexString(req.params.id);
     const contact = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -90,26 +90,29 @@ const updateContact = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    //update the contact
-    const updatedContact = await contact.replaceOne({ _id: contact_id }, contact);
-    if (updatedContact.modifiedCount > 0) {
+    const updatedContact = await Contact.findByIdAndUpdate(
+      contact_id,  // contact's ObjectId
+      { $set: contact },  // update the fields
+      { new: true }  // return the updated document
+    );
+
+    if (updatedContact) {
       res.status(200).send(updatedContact);
     } else {
       res.status(404).send({ message: 'Contact not found' });
     }
   } catch (err) {
     res.status(500).send({
-      message:
-        err.message || 'Error updating contact with id ' + contact_id,
+      message: err.message || 'Error updating contact with id ' + contact_id,
     });
   }
 };
 
 
-// Delete a Contact with the specified id in the request
 const deleteContact = (req, res) => {
-  const id = ObjectId.createFromHexString(req.params.id);
-  Contact.findByIdAndRemove(id)
+  const id = req.params.id;
+
+  Contact.findByIdAndDelete(id)
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -127,7 +130,6 @@ const deleteContact = (req, res) => {
       });
     });
 };
-
 
 
 module.exports = {
