@@ -1,10 +1,15 @@
 const routes = require('express').Router();
-const lesson1Controller = require('../controllers/lesson1');
+const contact = require('./contacts');
 
+routes.use('/contacts', contact);
 
-routes.get('/', lesson1Controller.daphneRoute);
-routes.get('/about', lesson1Controller.aboutRoute);
-routes.get('/contacts',require('./contacts'));
-
-module.exports = routes
- 
+routes.use(
+    '/',
+    (docData = (req, res) => {
+      let docData = {
+        documentationURL: 'https://github.com/Avritech-SmartPanda',
+      };
+      res.send(docData);
+    })
+  );
+module.exports = routes;

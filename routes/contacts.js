@@ -1,10 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const { getContacts, getContact } = require('../controllers/contacts');
+const router = require('express').Router();
+const app = require('express')();
+const { getContacts, getContact, createContact, updateContact, deleteContact } = require('../controllers/contacts');
+const bodyParser = require('body-parser');
+
 
 
 router.get('/', getContacts);
-router.get('/contacts', getContacts);
+router.post('/', createContact);
 router.get('/:id', getContact);
-
+router.put('/:id', updateContact);
+router.delete('/:id', deleteContact);
+app.use(bodyParser.json());
 module.exports = router;
